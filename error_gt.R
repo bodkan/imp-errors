@@ -1,15 +1,17 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 2) {
-  stop("Path to input VCF and error rate [0, 1] must be specified", call. = FALSE)
+if (length(args) != 3) {
+  stop("Path to input VCF, output VCF, and error rate [0, 1] must be specified", call. = FALSE)
 }
 
-path <- args[1]
-error_prob <- as.numeric(args[2])
-#path <- "onepop_gt_bi.vcf.gz"
+input_path <- args[1]
+output_path <- args[2]
+error_prob <- as.numeric(args[3])
+#input_path <- "onepop_gt_bi.vcf.gz"
+#output_path <- "onepop_gt_bi_errflat.vcf"
 #error_prob <- 0.14
 
-if (!file.exists(path)) {
+if (!file.exists(input_path)) {
   stop("No file found at the given path", call. = FALSE)
 }
 
@@ -41,7 +43,7 @@ flip_alleles <- function(alleles, error_prob, minor_alleless) {
 
 
 info <- Seqinfo(seqnames = "chr1", seqlengths = 1000, isCircular = FALSE, genome = "slendr")
-vcf <- readVcf(path, genome = info)
+vcf <- readVcf(input_path, genome = info)
 
 #header(vcf)
 #samples(header(vcf))
@@ -82,6 +84,6 @@ for (s in samples(header(vcf))) {
 
 cat("-----\nAverage errors across all haplotypes =", mean(props), "\n")
 
-flipped_path <- "onepop_gt_bi_errflat.vcf"
-writeVcf(vcf, flipped_path)
-system(paste("bgzip", flipped_path, ">", paste0(flipped_path, ".gz")))
+file <- tempfile()
+writeVcf(vcf, file)
+system(paste("bgzip -c", file, ">", output_path))

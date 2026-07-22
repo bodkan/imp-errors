@@ -12,7 +12,7 @@ all: $(vcfs)
 	  > $@
 
 %_bi_errflat.vcf.gz: %_bi.vcf.gz
-	Rscript error_gt.R $< 0.17
+	Rscript error_gt.R $< $@ 0.17
 
 clean: 
 	rm -f *.vcf.gz
