@@ -1,19 +1,14 @@
-# The standard measure of phase accuracy for genome-scale data is the switch
-# error rate,8–12 which is the proportion of pairs of consecutive heterozygotes
-# that are incorrectly phased.
-# -- https://www.cell.com/ajhg/fulltext/S0002-9297(22)00206-3
-
 args <- commandArgs(trailingOnly = TRUE)
 
-# TODO: add an argument indicating the population which will have errors added
-
-if (length(args) != 3) {
-  stop("Path to input VCF, output VCF, and error rate [0, 1] must be specified", call. = FALSE)
+if (length(args) != 4) {
+  stop("Input VCF, output VCF, error rate [0, 1], and population name(s) regex must be specified",
+       call. = FALSE)
 }
 
 input_path <- args[1]
 output_path <- args[2]
 error_rate <- as.numeric(args[3])
+pop <- args[4]
 #input_path <- "onepop_bi.vcf.gz"
 #output_path <- "onepop_bi_errphase.vcf.gz"
 #error_rate <- 0.1
@@ -39,7 +34,8 @@ vcf <- readVcf(input_path)
 
 props <- c()
 
-for (s in samples(header(vcf))) {
+subset <- grep(paste0(pop, "_"), samples(header(vcf)), value = TRUE)
+for (s in samples) {
   cat("Simulating errors in individual", s, "... ")
 
   # get a vector of (phased) genotypes of this sample and split it into two

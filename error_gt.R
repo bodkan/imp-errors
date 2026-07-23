@@ -1,14 +1,14 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 3) {
-  stop("Path to input VCF, output VCF, and error rate [0, 1] must be specified", call. = FALSE)
+if (length(args) != 4) {
+  stop("Input VCF, output VCF, error rate [0, 1], and population name(s) regex must be specified",
+       call. = FALSE)
 }
-
-# TODO: add an argument indicating the population which will have errors added
 
 input_path <- args[1]
 output_path <- args[2]
 error_rate <- as.numeric(args[3])
+pop <- args[4]
 #input_path <- "onepop_bi.vcf.gz"
 #output_path <- "onepop_bi_errflat.vcf"
 #error_rate <- 0.14
@@ -44,8 +44,7 @@ flip_alleles <- function(alleles, error_rate, minor_alleless) {
 }
 
 
-info <- Seqinfo(seqnames = "chr1", seqlengths = 1000, isCircular = FALSE, genome = "slendr")
-vcf <- readVcf(input_path, genome = info)
+vcf <- readVcf(input_path)
 
 #header(vcf)
 #samples(header(vcf))
@@ -57,7 +56,8 @@ minor_alleles <- as.character(as.integer(unlist(info(vcf)$AF == info(vcf)$MAF)))
 
 props <- c()
 
-for (s in samples(header(vcf))) {
+subset <- grep(paste0(pop, "_"), samples(header(vcf)), value = TRUE)
+for (s in samples) {
   cat("Simulating errors in individual", s, "... ")
 
   # get a vector of (phased) genotypes of this sample and split it into two
