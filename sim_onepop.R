@@ -1,7 +1,7 @@
 library(slendr)
 init_env(uv = TRUE)
 
-filename <- "onepop_gt.vcf.gz"
+filename <- "onepop.vcf.gz"
 
 population("p", time = 1000, N = 10000) %>%
   compile_model(generation_time = 1, direction = "backward") %>%
