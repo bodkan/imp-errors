@@ -1,3 +1,10 @@
+### Setup
+
+There are only two R packages needed for this to run:
+
+1. _slendr_ simulation package (available on CRAN through `install.packages("slendr")`)
+2. _VariantAnnotation_ package for VCF processing (available on Bioconductor through `BiocManager::install("VariantAnnotation")` after first installing `install.packages("BiocManager")`)
+
 ### Example use
 
 The whole pipeline is implemented in `make`, but here are the commands behind individual components (which can be run individually, of course — this is what you might want to do yourself so that you don't have to bother with tweaking the `Makefile`).
