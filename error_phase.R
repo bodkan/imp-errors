@@ -13,6 +13,8 @@ pop <- args[4]
 #output_path <- "onepop_bi_errphase.vcf.gz"
 #error_rate <- 0.1
 
+VERBOSE <- FALSE
+
 if (!file.exists(input_path)) {
   stop("No file found at the given path", call. = FALSE)
 }
@@ -30,8 +32,9 @@ vcf <- readVcf(input_path)
 props <- c()
 
 subset <- grep(pop, samples(header(vcf)), value = TRUE)
+
 for (s in subset) {
-  cat("Simulating errors in individual", s, "... ")
+  if (VERBOSE) cat("Simulating errors in individual", s, "... ")
 
   # get a vector of (phased) genotypes of this sample and split it into two
   # vectors with alleles (one for each haplotype)
@@ -63,12 +66,13 @@ for (s in subset) {
   compare$switch[het_sites[switch_events]] <- "switch"
   geno(vcf)$GT[, s] <- switched_gts
 
-  cat("done! ")
 
   prop <- mean(switch_events, na.rm = TRUE)
 
-  if (VERBOSE)
+  if (VERBOSE) {
+    cat("done! ")
     cat(sprintf("(switch error = %0.2f at %d het sites)\n", prop, length(het_sites)))
+  }
 
   props <- c(props, prop)
 }

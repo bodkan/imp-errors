@@ -53,7 +53,7 @@ props <- c()
 
 subset <- grep(pop, samples(header(vcf)), value = TRUE)
 for (s in subset) {
-  cat("Simulating errors in individual", s, "... ")
+  if (VERBOSE) cat("Simulating errors in individual", s, "... ")
 
   # get a vector of (phased) genotypes of this sample and split it into two
   # vectors with alleles (one for each haplotype)
@@ -69,13 +69,13 @@ for (s in subset) {
 
   geno(vcf)$GT[, s] <- flipped_gts
 
-  cat("done! ")
-
   prop1 <- mean(alleles1[minor_alleles == alleles1] != flipped1[minor_alleles == alleles1])
   prop2 <- mean(alleles2[minor_alleles == alleles2] != flipped2[minor_alleles == alleles2])
 
-  if (VERBOSE)
+  if (VERBOSE) {
+    cat("done! ")
     cat(sprintf("(haplotype 1 errors = %0.2f, haplotype 2 errors = %0.2f)\n", prop1, prop2))
+  }
 
   props <- c(props, prop1, prop2)
 }
