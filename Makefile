@@ -12,10 +12,10 @@ all: $(vcfs)
 	  > $@
 
 %_errorgt.vcf.gz: %.vcf.gz
-	Rscript error_gt.R $< $@ 0.17
+	Rscript error_gt.R $< $@ 0.05 'p_'
 
 %_errorphase.vcf.gz: %.vcf.gz
-	Rscript error_phase.R $< $@ 0.17
+	Rscript error_phase.R $< $@ 0.03 'p_'
 
 clean: 
 	rm -f *.vcf.gz

@@ -18,7 +18,7 @@ if (!file.exists(input_path)) {
 }
 
 if (!(0 <= error_rate && error_rate <= 1)) {
-  stop("Switch error rate must be a number between 0 and 1", call. = FALSE)
+  stop("Phase switch error rate must be a number between 0 and 1", call. = FALSE)
 }
 
 suppressPackageStartupMessages({
@@ -27,15 +27,10 @@ library(VariantAnnotation)
 
 vcf <- readVcf(input_path)
 
-#header(vcf)
-#samples(header(vcf))
-#geno(header(vcf))
-#info(vcf)
-
 props <- c()
 
-subset <- grep(paste0(pop, "_"), samples(header(vcf)), value = TRUE)
-for (s in samples) {
+subset <- grep(pop, samples(header(vcf)), value = TRUE)
+for (s in subset) {
   cat("Simulating errors in individual", s, "... ")
 
   # get a vector of (phased) genotypes of this sample and split it into two

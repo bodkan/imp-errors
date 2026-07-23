@@ -18,13 +18,11 @@ if (!file.exists(input_path)) {
 }
 
 if (!(0 <= error_rate && error_rate <= 1)) {
-  stop("Error probability must be a number between 0 and 1", call. = FALSE)
+  stop("Genotype error rate must be a number between 0 and 1", call. = FALSE)
 }
 
 suppressPackageStartupMessages({
 library(VariantAnnotation)
-library(ggplot2)
-library(dplyr)
 })
 
 flip_table <- list("0" = "1", "1" = "0")
@@ -46,18 +44,13 @@ flip_alleles <- function(alleles, error_rate, minor_alleless) {
 
 vcf <- readVcf(input_path)
 
-#header(vcf)
-#samples(header(vcf))
-#geno(header(vcf))
-#info(vcf)
-
 # find out which 0 (REF) or 1 (ALT) allele states at each site are minor alleles
 minor_alleles <- as.character(as.integer(unlist(info(vcf)$AF == info(vcf)$MAF)))
 
 props <- c()
 
-subset <- grep(paste0(pop, "_"), samples(header(vcf)), value = TRUE)
-for (s in samples) {
+subset <- grep(pop, samples(header(vcf)), value = TRUE)
+for (s in subset) {
   cat("Simulating errors in individual", s, "... ")
 
   # get a vector of (phased) genotypes of this sample and split it into two
