@@ -1,4 +1,6 @@
-vcfs := onepop.vcf.gz onepop_bi.vcf.gz onepop_bi_errorgt.vcf.gz onepop_bi_errorphase.vcf.gz
+models := onepop
+suffixes := .vcf.gz _bi.vcf.gz _bi_errorgt.vcf.gz _bi_errorphase.vcf.gz
+vcfs := $(foreach m,$(models),$(addprefix $(m),$(suffixes)))
 
 all: $(vcfs)
 
