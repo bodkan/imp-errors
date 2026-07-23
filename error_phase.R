@@ -67,12 +67,14 @@ for (s in subset) {
 
   prop <- mean(switch_events, na.rm = TRUE)
 
-  cat(sprintf("(switch error = %0.2f at %d het sites)\n", prop, length(het_sites)))
+  if (VERBOSE)
+    cat(sprintf("(switch error = %0.2f at %d het sites)\n", prop, length(het_sites)))
 
   props <- c(props, prop)
 }
 
-cat("-----\nAverage switch errors across all samples =", mean(props, na.rm = TRUE), "\n")
+if (VERBOSE) cat("-----\n")
+cat("Average switch errors across all samples =", mean(props, na.rm = TRUE), "\n")
 
 file <- tempfile()
 writeVcf(vcf, file)

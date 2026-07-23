@@ -13,6 +13,8 @@ pop <- args[4]
 #output_path <- "onepop_bi_errflat.vcf"
 #error_rate <- 0.14
 
+VERBOSE <- FALSE
+
 if (!file.exists(input_path)) {
   stop("No file found at the given path", call. = FALSE)
 }
@@ -72,12 +74,15 @@ for (s in subset) {
   prop1 <- mean(alleles1[minor_alleles == alleles1] != flipped1[minor_alleles == alleles1])
   prop2 <- mean(alleles2[minor_alleles == alleles2] != flipped2[minor_alleles == alleles2])
 
-  cat(sprintf("(haplotype 1 errors = %0.2f, haplotype 2 errors = %0.2f)\n", prop1, prop2))
+  if (VERBOSE)
+    cat(sprintf("(haplotype 1 errors = %0.2f, haplotype 2 errors = %0.2f)\n", prop1, prop2))
 
   props <- c(props, prop1, prop2)
 }
 
-cat("-----\nAverage errors across all haplotypes =", mean(props), "\n")
+if (VERBOSE) cat("-----\n")
+
+cat("Average errors across all haplotypes =", mean(props), "\n")
 
 file <- tempfile()
 writeVcf(vcf, file)
