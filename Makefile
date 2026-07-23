@@ -5,7 +5,7 @@ vcfs := $(foreach m,$(models),$(addprefix $(m),$(suffixes)))
 all: $(vcfs)
 
 %.vcf.gz: sim_%.R
-	Rscript $<
+	Rscript $< $@ 42
 
 %_bi.vcf.gz: %.vcf.gz
 	bcftools +fill-tags $< -- -t AF,MAF \
