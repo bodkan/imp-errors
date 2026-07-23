@@ -5,6 +5,8 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 
+# TODO: add an argument indicating the population which will have errors added
+
 if (length(args) != 3) {
   stop("Path to input VCF, output VCF, and error rate [0, 1] must be specified", call. = FALSE)
 }
@@ -66,7 +68,8 @@ for (s in samples(header(vcf))) {
 
   compare <- data.frame(original = gts, switched = switched_gts)
   compare$switch <- "-"
-  compare$switch[to_switch] <- "here"
+  compare$switch[to_switch] <- "flipped"
+  compare$switch[het_sites[switch_events]] <- "switch"
   geno(vcf)$GT[, s] <- switched_gts
 
   cat("done! ")
