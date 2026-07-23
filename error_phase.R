@@ -5,24 +5,24 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 
-#if (length(args) != 3) {
-#  stop("Path to input VCF, output VCF, and error rate [0, 1] must be specified", call. = FALSE)
-#}
+if (length(args) != 3) {
+  stop("Path to input VCF, output VCF, and error rate [0, 1] must be specified", call. = FALSE)
+}
 
-#input_path <- args[1]
-#output_path <- args[2]
-#error_rate <- as.numeric(args[3])
-input_path <- "onepop_gt_bi.vcf.gz"
-output_path <- "onepop_gt_bi_errphase.vcf.gz"
-error_rate <- 0.1
+input_path <- args[1]
+output_path <- args[2]
+error_rate <- as.numeric(args[3])
+#input_path <- "onepop_bi.vcf.gz"
+#output_path <- "onepop_bi_errphase.vcf.gz"
+#error_rate <- 0.1
 
-#if (!file.exists(input_path)) {
-#  stop("No file found at the given path", call. = FALSE)
-#}
-#
-#if (!(0 <= error_rate && error_rate <= 1)) {
-#  stop("Switch error rate must be a number between 0 and 1", call. = FALSE)
-#}
+if (!file.exists(input_path)) {
+  stop("No file found at the given path", call. = FALSE)
+}
+
+if (!(0 <= error_rate && error_rate <= 1)) {
+  stop("Switch error rate must be a number between 0 and 1", call. = FALSE)
+}
 
 suppressPackageStartupMessages({
 library(VariantAnnotation)
