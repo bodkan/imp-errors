@@ -1,2 +1,3 @@
 *.vcf.gz
 tags
+.swp
