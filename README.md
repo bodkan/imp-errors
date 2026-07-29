@@ -27,8 +27,8 @@ simply means that the latter is what's to be run inside the container. If you
 want to run a different script, or a different command inside the container,
 you can use the same trick.
 
-(I know the `docker run ...` command is too long. That's why I wrapped this
-pipeline in Make).
+(I know the `docker run ...` command is annoyingly long. That's why I wrapped
+this pipeline in Make, hoping to make it easier even if you don't know Docker.)
 
 #### 1. Simulation of genotype data
 
