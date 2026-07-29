@@ -14,7 +14,9 @@ make docker-build
 Each individual Make rule runs a single command inside Docker. Below, I'm
 showing those rules when run with the `-n` flag ("dry run"), which only prints
 the commands to be run, without actually running them (just like one would with
-Snakemake).
+Snakemake). Note that this always takes the form of `docker run <...>` followed
+by the actual script or bcftools command. This simply means that the latter is
+what's to be run inside the container.
 
 #### 1. Simulation of genotype data
 
