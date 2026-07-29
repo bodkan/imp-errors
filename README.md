@@ -16,7 +16,8 @@ showing those rules when run with the `-n` flag ("dry run"), which only prints
 the commands to be run, without actually running them (just like one would with
 Snakemake).
 
-Note that this always takes the form of this "prefix":
+Note that the Make rules / commands below always take the form of this
+"prefix":
 
 ```
 docker run --rm -ti -v /maps/projects/racimolab/people/krd114/imp-errors:/project -w /project --name imp-errors imp-errors:amd64
