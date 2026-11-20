@@ -36,7 +36,7 @@ models := onepop twopop
 suffixes := .vcf.gz _bi.vcf.gz _bi_errorgt.vcf.gz _bi_errorphase.vcf.gz
 vcfs := $(foreach m,$(models),$(addprefix $(m),$(suffixes)))
 
-all: $(vcfs)
+all: $(vcfs) summary
 
 %.vcf.gz: sim_%.R
 	$(RUN) Rscript $< $@ 42
@@ -53,7 +53,7 @@ all: $(vcfs)
 %_errorphase.vcf.gz: %.vcf.gz
 	$(RUN) Rscript error_phase.R $< $@ 0.03 'p1_'
 
-summary:
+summary: $(vcfs)
 	echo p1_{1..100} | tr ' ' '\n' > list_target.txt
 	echo p2_{1..100} | tr ' ' '\n' > list_panel.txt
 	bcftools view -H --samples-file list_target.txt twopop_bi.vcf.gz            > target_orig.txt
