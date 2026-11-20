@@ -53,6 +53,15 @@ all: $(vcfs) summary
 %_errorphase.vcf.gz: %.vcf.gz
 	$(RUN) Rscript error_phase.R $< $@ 0.03 'p1_'
 
+# create summaries of VCF differences to check that:
+#   - "original" VCFs must be the same as "error GT / phase" for panel
+#   - "original" VCFs must differ from "error GT / phase" for target
+# i.e., this will be the same genotypes:
+#   - vimdiff panel_orig.txt panel_errorgt.txt
+#   - vimdiff panel_orig.txt panel_errorphase.txt
+# but these will be different:
+#   - vimdiff target_orig.txt target_errorgt.txt
+#   - vimdiff target_orig.txt target_errorphase.txt
 summary: $(vcfs)
 	echo p1_{1..100} | tr ' ' '\n' > list_target.txt
 	echo p2_{1..100} | tr ' ' '\n' > list_panel.txt
