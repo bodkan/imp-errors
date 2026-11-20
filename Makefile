@@ -53,5 +53,15 @@ all: $(vcfs)
 %_errorphase.vcf.gz: %.vcf.gz
 	$(RUN) Rscript error_phase.R $< $@ 0.03 'p1_'
 
+summary:
+	echo p1_{1..100} | tr ' ' '\n' > list_target.txt
+	echo p2_{1..100} | tr ' ' '\n' > list_panel.txt
+	bcftools view -H --samples-file list_target.txt twopop_bi.vcf.gz            > target_orig.txt
+	bcftools view -H --samples-file list_target.txt twopop_bi_errorgt.vcf.gz    > target_errorgt.txt
+	bcftools view -H --samples-file list_target.txt twopop_bi_errorphase.vcf.gz > target_errorphase.txt
+	bcftools view -H --samples-file list_panel.txt  twopop_bi.vcf.gz            > panel_orig.txt
+	bcftools view -H --samples-file list_panel.txt  twopop_bi_errorgt.vcf.gz    > panel_errorgt.txt
+	bcftools view -H --samples-file list_panel.txt  twopop_bi_errorphase.vcf.gz > panel_errorphase.txt
+
 clean: 
-	rm -f *.vcf.gz
+	rm -f *.vcf.gz *.txt
