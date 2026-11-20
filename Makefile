@@ -32,7 +32,7 @@ docker-build-clean:
 # the make pipeline rules themselves
 #
 
-models := onepop
+models := onepop twopop
 suffixes := .vcf.gz _bi.vcf.gz _bi_errorgt.vcf.gz _bi_errorphase.vcf.gz
 vcfs := $(foreach m,$(models),$(addprefix $(m),$(suffixes)))
 
@@ -48,10 +48,10 @@ all: $(vcfs)
 	  > $@
 
 %_errorgt.vcf.gz: %.vcf.gz
-	$(RUN) Rscript error_gt.R $< $@ 0.05 'p_'
+	$(RUN) Rscript error_gt.R $< $@ 0.05 'p1_'
 
 %_errorphase.vcf.gz: %.vcf.gz
-	$(RUN) Rscript error_phase.R $< $@ 0.03 'p_'
+	$(RUN) Rscript error_phase.R $< $@ 0.03 'p1_'
 
 clean: 
-	rm -f *.vcf.gz log.txt
+	rm -f *.vcf.gz
