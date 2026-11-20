@@ -7,7 +7,7 @@ if (length(args) != 2) {
 vcf <- args[1]
 random_seed <- as.integer(args[2])
 
-#vcf <- "test.vcf.gz"
+#vcf <- "onepop.vcf.gz"
 #random_seed <- 42
 
 suppressPackageStartupMessages(library(slendr))
@@ -15,6 +15,6 @@ init_env()
 
 population("p", time = 1000, N = 10000) %>%
   compile_model(generation_time = 1, direction = "backward") %>%
-  msprime(sequence_length = 300e6, recombination_rate = 1e-8, random_seed = 42) %>%
-  ts_mutate(mutation_rate = 1e-8, random_seed = 42) %>%
+  msprime(sequence_length = 300e6, recombination_rate = 1e-8, random_seed = random_seed) %>%
+  ts_mutate(mutation_rate = 1e-8, random_seed = random_seed) %>%
   ts_vcf(vcf, individuals = paste("p", 1:100, sep = "_"))
