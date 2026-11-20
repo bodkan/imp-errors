@@ -56,12 +56,12 @@ all: $(vcfs) summary
 summary: $(vcfs)
 	echo p1_{1..100} | tr ' ' '\n' > list_target.txt
 	echo p2_{1..100} | tr ' ' '\n' > list_panel.txt
-	bcftools view -H --samples-file list_target.txt twopop_bi.vcf.gz            > target_orig.txt
-	bcftools view -H --samples-file list_target.txt twopop_bi_errorgt.vcf.gz    > target_errorgt.txt
-	bcftools view -H --samples-file list_target.txt twopop_bi_errorphase.vcf.gz > target_errorphase.txt
-	bcftools view -H --samples-file list_panel.txt  twopop_bi.vcf.gz            > panel_orig.txt
-	bcftools view -H --samples-file list_panel.txt  twopop_bi_errorgt.vcf.gz    > panel_errorgt.txt
-	bcftools view -H --samples-file list_panel.txt  twopop_bi_errorphase.vcf.gz > panel_errorphase.txt
+	bcftools view -H --samples-file list_target.txt twopop_bi.vcf.gz            | cut -f 10- > target_orig.txt
+	bcftools view -H --samples-file list_target.txt twopop_bi_errorgt.vcf.gz    | cut -f 10- > target_errorgt.txt
+	bcftools view -H --samples-file list_target.txt twopop_bi_errorphase.vcf.gz | cut -f 10- > target_errorphase.txt
+	bcftools view -H --samples-file list_panel.txt  twopop_bi.vcf.gz            | cut -f 10- > panel_orig.txt
+	bcftools view -H --samples-file list_panel.txt  twopop_bi_errorgt.vcf.gz    | cut -f 10- > panel_errorgt.txt
+	bcftools view -H --samples-file list_panel.txt  twopop_bi_errorphase.vcf.gz | cut -f 10- > panel_errorphase.txt
 
 clean: 
 	rm -f *.vcf.gz *.txt
