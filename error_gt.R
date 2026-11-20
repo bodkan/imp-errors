@@ -12,6 +12,7 @@ pop <- args[4]
 #input_path <- "onepop_bi.vcf.gz"
 #output_path <- "onepop_bi_errflat.vcf"
 #error_rate <- 0.14
+#pop <- "p"
 
 VERBOSE <- FALSE
 
