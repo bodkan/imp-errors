@@ -15,6 +15,6 @@ init_env()
 
 population("p", time = 1000, N = 10000) %>%
   compile_model(generation_time = 1, direction = "backward") %>%
-  msprime(sequence_length = 300e6, recombination_rate = 1e-8, random_seed = random_seed) %>%
+  msprime(sequence_length = 1e6, recombination_rate = 1e-8, random_seed = random_seed) %>%
   ts_mutate(mutation_rate = 1e-8, random_seed = random_seed) %>%
   ts_vcf(vcf, individuals = paste("p", 1:100, sep = "_"))
