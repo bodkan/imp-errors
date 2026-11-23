@@ -33,6 +33,10 @@ props <- c()
 
 subset <- grep(pop, samples(header(vcf)), value = TRUE)
 
+if (!length(subset)) {
+  stop("The indicated population subset left zero individuals to process", call. = FALSE)
+}
+
 for (s in subset) {
   if (VERBOSE) cat("Simulating errors in individual", s, "... ")
 
