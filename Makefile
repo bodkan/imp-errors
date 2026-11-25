@@ -28,6 +28,12 @@ docker-build:
 docker-build-clean:
 	docker build --no-cache --build-arg GITHUB_PAT=$(TOKEN) -t $(IMAGE) .
 
+docker-push:
+	docker push $(IMAGE)
+
+docker-pull:
+	docker pull $(IMAGE)
+
 ##################################################
 # the make pipeline rules themselves
 #
