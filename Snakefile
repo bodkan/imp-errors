@@ -1,19 +1,19 @@
+import os
 import platform
 import sys
 
-# check the OS type to assign appropriate Docker image tag
+# check the OS type to get the appropriate name of the Docker image
 if platform.system() == "Darwin":
-    PLATFORM = "arm64"
+    IMAGE = f"bodkan/imp-errors:arm64"
 elif platform.system() == "Linux":
-    PLATFORM = "amd64"
+    IMAGE = f"bodkan/imp-errors:amd64"
 else:
     sys.exit("Unsupported operating system")
 
-# container image to pull from a remote repository
-IMAGE = f"bodkan/imp-errors:{PLATFORM}"
-
-# use containers for every rule in this Snakefile
-container: "docker://" + IMAGE
+# A custom function to pass a given shell command to Docker. Intended
+# to be used inside a `shell:` rule in Snakemake.
+def run_docker(cmd):
+    return f"docker run --rm -ti -v {os.getcwd()}:/project -w /project {IMAGE} {cmd}"
 
 # dummy models to simulate
 MODELS = ["onepop", "twopop"]
@@ -28,7 +28,7 @@ rule simulate_vcf:
     output:
         vcf="{model}.vcf.gz"
     shell:
-        "Rscript {input.script} {output.vcf} 42"
+        run_docker("Rscript {input.script} {output.vcf} 42")
 
 rule filter_biallelic:
     input:
@@ -36,12 +36,13 @@ rule filter_biallelic:
     output:
         vcf="{model}_bi.vcf.gz"
     shell:
-        """
-        bcftools +fill-tags {input.vcf} -- -t AF,MAF \
+        run_docker(
+        """bcftools +fill-tags {input.vcf} -- -t AF,MAF \
          | bcftools view -m2 -M2 \
          | bcftools view -e 'COUNT(GT="AA")=N_SAMPLES || COUNT(GT="RR")=N_SAMPLES' -Oz \
           > {output.vcf}
         """
+        )
 
 rule simulate_gt_errors:
     input:
@@ -49,7 +50,7 @@ rule simulate_gt_errors:
     output:
         vcf="{model}_bi_errorgt.vcf.gz"
     shell:
-        "Rscript error_gt.R {input.vcf} {output.vcf} 0.05 'p1_'"
+        run_docker("Rscript error_gt.R {input.vcf} {output.vcf} 0.05 'p1_'")
 
 rule simulate_phase_errors:
     input:
@@ -57,7 +58,7 @@ rule simulate_phase_errors:
     output:
         vcf="{model}_bi_errorphase.vcf.gz"
     shell:
-        "Rscript error_phase.R {input.vcf} {output.vcf} 0.05 'p1_'"
+        run_docker("Rscript error_phase.R {input.vcf} {output.vcf} 0.05 'p1_'")
 
 rule clean: 
     shell:
