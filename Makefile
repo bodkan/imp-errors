@@ -5,7 +5,7 @@ else
     PLATFORM ?= amd64
 endif
 
-IMAGE := $(shell basename $(shell pwd)):$(PLATFORM)
+IMAGE := bodkan/$(shell basename $(shell pwd)):$(PLATFORM)
 CONTAINER := $(shell basename $(shell pwd))
 
 # if present, extract GitHub access token
