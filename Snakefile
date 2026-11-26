@@ -15,12 +15,13 @@ IMAGE = f"bodkan/imp-errors:{PLATFORM}"
 # use containers for every rule in this Snakefile
 container: "docker://" + IMAGE
 
-# dummy models to simulate
+# dummy models and errors to simulate
 MODELS = ["onepop", "twopop"]
+ERRORS = ["errorgt", "errorphase"]
 
 rule all:
     input:
-        vcf=expand("{model}_bi.vcf.gz", model=MODELS)
+        vcf=expand("{model}_bi_{error}.vcf.gz", model=MODELS, error=ERRORS)
 
 rule simulate_vcf:
     input:
@@ -28,7 +29,7 @@ rule simulate_vcf:
     output:
         vcf="{model}.vcf.gz"
     shell:
-        "Rscript {input.script} {output.vcf} 42"
+        "HOME=/root Rscript {input.script} {output.vcf} 42"
 
 rule filter_biallelic:
     input:
@@ -49,7 +50,7 @@ rule simulate_gt_errors:
     output:
         vcf="{model}_bi_errorgt.vcf.gz"
     shell:
-        "Rscript error_gt.R {input.vcf} {output.vcf} 0.05 'p1_'"
+        "HOME=/root Rscript error_gt.R {input.vcf} {output.vcf} 0.05 'p1_'"
 
 rule simulate_phase_errors:
     input:
@@ -57,7 +58,7 @@ rule simulate_phase_errors:
     output:
         vcf="{model}_bi_errorphase.vcf.gz"
     shell:
-        "Rscript error_phase.R {input.vcf} {output.vcf} 0.05 'p1_'"
+        "HOME=/root Rscript error_phase.R {input.vcf} {output.vcf} 0.05 'p1_'"
 
 rule clean: 
     shell:
