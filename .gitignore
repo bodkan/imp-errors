@@ -4,3 +4,4 @@ tags
 *.txt
 .snakemake/
 .DS_Store
+.cache/
