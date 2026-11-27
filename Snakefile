@@ -50,7 +50,7 @@ rule simulate_gt_errors:
     output:
         vcf="{model}_bi_errorgt.vcf.gz"
     shell:
-        "HOME=/root Rscript error_gt.R {input.vcf} {output.vcf} 0.05 'p1_'"
+        "Rscript error_gt.R {input.vcf} {output.vcf} 0.05 'p1_'"
 
 rule simulate_phase_errors:
     input:
@@ -58,7 +58,7 @@ rule simulate_phase_errors:
     output:
         vcf="{model}_bi_errorphase.vcf.gz"
     shell:
-        "HOME=/root Rscript error_phase.R {input.vcf} {output.vcf} 0.05 'p1_'"
+        "Rscript error_phase.R {input.vcf} {output.vcf} 0.05 'p1_'"
 
 rule clean: 
     shell:
